@@ -1,1 +1,1 @@
-This is the stub README.txt for the "sudoku" project.
+Sudoku solver
