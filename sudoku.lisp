@@ -50,7 +50,7 @@
 	finally (return nil)))
 
 (defun sreduce (sudoku)
-  (loop while (iter sudoku)))
+  (loop while (iterate sudoku)))
 
 (defun show (sudoku)
   (loop for r from 0 below 9
@@ -63,6 +63,15 @@
   (sreduce s)
   (unless (solvedp s)
     ))
+
+(defun solve (stack)
+  "UNFINISHED"
+  (unless (solvedp (first stack))
+    (let* ((s (copy-seq (first stack)))
+	   (z (position 0 s)))
+      (setf (aref s z) (first (possibilities s z)))
+      (solve (push (sreduce s) stack)))))
+    
 
 (defparameter *s*
   #(0 5 0 7 0 0 2 0 0
