@@ -46,8 +46,8 @@
 	for p = (if (zerop (aref sudoku i)) (possibilities sudoku i) nil)
 	when (= 1 (length p))
 	  do (setf (aref sudoku i) (first p))
-	     (return sudoku)
-	finally (return nil)))
+	     (return (values sudoku t))
+	finally (return (values sudoku nil))))
 
 (defun sreduce (sudoku)
   (loop while (iterate sudoku)))
@@ -59,19 +59,8 @@
 (defun solvedp (sudoku)
   (not (position 0 sudoku)))
 
-(defun solve (s)
-  (sreduce s)
-  (unless (solvedp s)
-    ))
-
 (defun solve (stack)
-  "UNFINISHED"
-  (unless (solvedp (first stack))
-    (let* ((s (copy-seq (first stack)))
-	   (z (position 0 s)))
-      (setf (aref s z) (first (possibilities s z)))
-      (solve (push (sreduce s) stack)))))
-    
+  (format t "~&~a~%" (show (first stack)))
 
 (defparameter *s*
   #(0 5 0 7 0 0 2 0 0
