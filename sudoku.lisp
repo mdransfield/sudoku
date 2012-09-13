@@ -46,11 +46,13 @@
 	for p = (if (zerop (aref sudoku i)) (possibilities sudoku i) nil)
 	when (= 1 (length p))
 	  do (setf (aref sudoku i) (first p))
-	     (return (values sudoku t))
-	finally (return (values sudoku nil))))
+	     (return (values sudoku nil))
+	finally (return (values sudoku t))))
 
 (defun sreduce (sudoku)
-  (loop while (iterate sudoku)))
+  (do ((iterated (multiple-value-list (iterate sudoku))
+		 (multiple-value-list (iterate (first iterated)))))
+      ((second iterated) (first iterated))))
 
 (defun show (sudoku)
   (loop for r from 0 below 9
