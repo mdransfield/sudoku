@@ -62,20 +62,19 @@
   (not (position 0 sudoku)))
 
 (defun solve (stack)
-  (format t "~&~a~s~%" (show (first stack)) stack)
   (if (solvedp (first stack))
       (first stack)
-      (let* ((new (copy-seq (first stack)))
-	     (emp (position 0 new))
-	     (pos (possibilities new emp)))
-	(if (null pos)
-	    nil
-	    (loop for p in pos
-		  for a = (setf (aref new emp) p)
-		  for x = (solve (push (sreduce new) stack))
-		  if (solvedp x)
-		    return x
-		  finally (return nil))))))
+      (loop with new = (copy-seq (first stack))
+	    with emp = (position 0 new)
+	    with pos = (possibilities new emp)
+	    with x
+	    for p in pos
+	    do (format t "~&stack: ~s~&new: ~s~&emp: ~s~&pos: ~s~&p: ~s~&x: ~s~%" stack new emp pos p x)
+	       (setf (aref new emp) p
+		     x (solve (cons (sreduce new) stack)))
+	    if x
+	      return x
+	    finally (return nil))))
 
 (defparameter *s*
   #(0 5 0 7 0 0 2 0 0
