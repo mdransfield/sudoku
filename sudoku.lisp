@@ -54,27 +54,29 @@
 		 (multiple-value-list (iterate (first iterated)))))
       ((second iterated) (first iterated))))
 
+
 (defun show (sudoku)
-  (loop for r from 0 below 9
-	do (format t "~&~s~%" (subseq sudoku (encode r 0) (encode (1+ r) 0)))))
+  (unless (null sudoku)
+    (loop for r from 0 below 9
+	  do (format t "~&~a~%" (subseq sudoku (encode r 0) (encode (1+ r) 0))))))
 
 (defun solvedp (sudoku)
   (not (position 0 sudoku)))
 
-(defun solve (stack)
+(defun solver (stack)
   (if (solvedp (first stack))
       (first stack)
-      (loop with new = (copy-seq (first stack))
-	    with emp = (position 0 new)
-	    with pos = (possibilities new emp)
-	    with x
-	    for p in pos
-	    do (format t "~&stack: ~s~&new: ~s~&emp: ~s~&pos: ~s~&p: ~s~&x: ~s~%" stack new emp pos p x)
-	       (setf (aref new emp) p
-		     x (solve (cons (sreduce new) stack)))
+      (loop with emp = (position 0 (first stack))
+	    for p in (possibilities (first stack) emp)
+	    for new = (copy-seq (first stack))
+	    for dummy = (setf (aref new emp) p)
+	    for x = (solver (cons (sreduce new) stack))
 	    if x
 	      return x
 	    finally (return nil))))
+
+(defun solve (sudoku)
+  (show (solver (list sudoku))))
 
 (defparameter *s*
   #(0 5 0 7 0 0 2 0 0
@@ -97,3 +99,14 @@
     6 7 0 5 0 1 0 8 3
     0 0 1 0 9 0 2 0 0
     0 0 0 0 0 0 0 0 0))
+
+(defparameter *s2*
+  #(6 0 3 0 0 0 5 0 0
+    0 0 0 1 0 0 7 0 0
+    2 0 0 0 6 7 0 0 8
+    0 0 0 7 0 0 1 0 0
+    0 8 0 0 0 0 0 4 0
+    0 0 1 0 0 4 0 0 0
+    4 0 0 9 2 0 0 0 1
+    0 0 8 0 0 5 0 0 0
+    0 0 9 0 0 0 6 0 2))
