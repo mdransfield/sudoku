@@ -2,9 +2,9 @@
 
 (asdf:defsystem #:sudoku
   :serial t
-  :description "Describe sudoku here"
-  :author "Your Name <your.name@example.com>"
-  :license "Specify license here"
+  :description "Sudoku solver"
+  :author "Martin Dransfield <mdransfield@gmail.com>"
+  :license "GNU GPL 3 (see file LICENSE for details"
   :components ((:file "package")
                (:file "sudoku")))
 

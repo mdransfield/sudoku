@@ -1,5 +1,6 @@
 ;;;; package.lisp
 
 (defpackage #:sudoku
-  (:use #:cl))
+  (:use #:cl)
+  (:export #:solve #:solver))
 
